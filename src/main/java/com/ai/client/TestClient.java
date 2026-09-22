@@ -6,10 +6,7 @@ public class TestClient {
 
 	public static void main(String[] args) {
 		try (Agent agent = new Agent()) {
-			String response = agent.chat("""
-					Authenticate user admin with password Welcome@123
-					and then get the user's details.
-					""");
+			String response = agent.chat("Get details of admin with password Welcome@123");
 			System.out.println(response);
 			
 //	        System.out.println("--------");

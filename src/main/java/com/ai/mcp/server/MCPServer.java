@@ -1,8 +1,5 @@
 package com.ai.mcp.server;
 
-import com.ai.mcp.tools.AccountToolSpecification;
-import com.ai.mcp.tools.AuthenticationToolSpecification;
-
 import io.modelcontextprotocol.json.McpJsonDefaults;
 import io.modelcontextprotocol.server.McpServer;
 import io.modelcontextprotocol.server.McpServerFeatures.SyncToolSpecification;
@@ -34,8 +31,6 @@ public class MCPServer {
 		    .build();
 		// @formatter:on
 
-		syncServer.addTool(AuthenticationToolSpecification.create());
-		syncServer.addTool(AccountToolSpecification.create());
 		for (SyncToolSpecification spec : args) {
 			syncServer.addTool(spec);
 		}

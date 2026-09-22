@@ -16,25 +16,27 @@ public class Agent implements AutoCloseable {
 	//@formatter:off
 	private static OpenAiChatModel openAiChatModel = OpenAiChatModel
 			.builder()
-			.baseUrl("http://localhost:8080/v1") 	// llama.cpp
+			.baseUrl("http://localhost:8080/v1") 	// llama.cpp server endpoint
 			.apiKey("dummy-key-for-local-server") 	// Required field, but ignored by llama.cpp
 			.modelName("Qwen3.5-0.8B") 				// Matches your running GGUF
 			.temperature(0.0).build();
 
 	private static OllamaChatModel ollamaChatModel = OllamaChatModel
 			.builder()
-			.baseUrl("http://localhost:11434") // ollama
+			.baseUrl("http://localhost:11434") // ollama endpoint
 			// .modelName("llama3.1") // Not able to perform tools chaining
 			.modelName("qwen2.5:7b")
 			.temperature(0.0).build();
 
+	// Its just a wrapper on top of HTTP client
 	private static McpTransport transport = StreamableHttpMcpTransport
 			.builder()
-			.url("http://localhost:8081/mcp") // Local MCPServer provides tools
+			.url("http://localhost:8081/mcp")
 			.logRequests(true)
 			.logResponses(true)
 			.build();
 
+	// Provides the agent with information about all tools available at MCP server.
 	private static McpClient mcpClient = DefaultMcpClient.builder()
 			.key("java-mcp-client")
 			.transport(transport)
@@ -43,12 +45,13 @@ public class Agent implements AutoCloseable {
 	private static McpToolProvider toolProvider = McpToolProvider.builder()
 			.mcpClients(mcpClient)
 			.build();
-
+    
+	// final orchestrator or co-ordinator of tools + LLM + clients calls
 	private static Assistant assistant = AiServices.builder(Assistant.class)
 			.chatModel(openAiChatModel)
 			// .chatModel(ollamaChatModel)
-			.tools(new CalculatorTool()) // tightly coupled
-			.toolProvider(toolProvider) // loosely coupled with mcp server
+			.tools(new CalculatorTool()) // tightly coupled tools
+			.toolProvider(toolProvider)  // loosely coupled tools with mcp client
 			.build();
 	//@formatter:on
 

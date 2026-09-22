@@ -14,8 +14,11 @@ import jakarta.servlet.DispatcherType;
 public class HTTPServer {
 
 	public static void main(String[] args) {
+		// MCP server it self is not capable of reading the network calls.
+		// Its a Servlet that receives the MPC client calls from agent, to select and execute the tool.  
 		HttpServletStreamableServerTransportProvider transportProvider = MCPServer
 				.buildTransportProvider(AccountToolSpecification.create(), AuthenticationToolSpecification.create());
+		
 		int port = 8081;
 		Server jettyServer = new Server(port);
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
