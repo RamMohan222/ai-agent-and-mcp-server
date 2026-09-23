@@ -49,7 +49,7 @@ You can use either Ollama or llama.cpp.
 For example, with Ollama:
 
 ```bash
-ollama run llama3.1
+ollama run qwen2.5:7b
 ```
 
 Or start a compatible model using `llama.cpp`.
