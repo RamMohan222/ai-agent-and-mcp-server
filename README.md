@@ -53,6 +53,9 @@ ollama run qwen2.5:7b
 ```
 
 Or start a compatible model using `llama.cpp`.
+```bash
+llama-server -hf ggml-org/Qwen3.5-0.8B-GGUF:Q8_0 -c 4028
+```
 
 ### 2. Start the MCP Server
 
