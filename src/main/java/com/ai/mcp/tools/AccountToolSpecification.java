@@ -70,13 +70,19 @@ public class AccountToolSpecification {
 					if (username == null || username.isBlank()) {
 						log("Invalid username");
 						return McpSchema.CallToolResult.builder()
-								.addContent(McpSchema.TextContent.builder(Result.of("INVALID_USERNAME")).build()).build();
+								.structuredContent(Result.of("INVALID_USERNAME"))
+								.addTextContent("Invalid username provided")
+								//.addContent(McpSchema.TextContent.builder(Result.of("INVALID_USERNAME")).build())
+								.build();
 					}
 
 					if (accesstoken == null || accesstoken.isBlank() || !isValidToken(accesstoken)) {
 						log("Invalid accesstoken");
 						return McpSchema.CallToolResult.builder()
-								.addContent(McpSchema.TextContent.builder(Result.of("INVALID_ACCESSTOKEN")).build()).build();
+								.structuredContent(Result.of("INVALID_ACCESSTOKEN"))
+								.addTextContent("Invalid accesstoken provided")
+								//.addContent(McpSchema.TextContent.builder(Result.of("INVALID_ACCESSTOKEN")).build())
+								.build();
 
 					}
 
@@ -88,7 +94,8 @@ public class AccountToolSpecification {
 				    		);
 		
 					return McpSchema.CallToolResult.builder()
-									.content(List.of(McpSchema.TextContent.builder(Result.of("SUCCESS", body)).build()))
+									.structuredContent(Result.of("SUCCESS", body))
+									//.content(List.of(McpSchema.TextContent.builder(Result.of("SUCCESS", body)).build()))
 									.build();
 				}).build();
 		//@formatter:on

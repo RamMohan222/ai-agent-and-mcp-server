@@ -14,22 +14,22 @@ import dev.langchain4j.service.AiServices;
 public class Agent implements AutoCloseable {
 
 	//@formatter:off
-	private static OpenAiChatModel openAiChatModel = OpenAiChatModel
+	private OpenAiChatModel openAiChatModel = OpenAiChatModel
 			.builder()
 			.baseUrl("http://localhost:8080/v1") 	// llama.cpp server endpoint
 			.apiKey("dummy-key-for-local-server") 	// Required field, but ignored by llama.cpp
 			.modelName("Qwen3.5-0.8B") 				// Matches your running GGUF
 			.temperature(0.0).build();
 
-	private static OllamaChatModel ollamaChatModel = OllamaChatModel
+	private OllamaChatModel ollamaChatModel = OllamaChatModel
 			.builder()
 			.baseUrl("http://localhost:11434") // ollama endpoint
-			// .modelName("llama3.1") // Not able to perform tools chaining
+			// .modelName("llama3.1") // Not performing will with tools chaining
 			.modelName("qwen2.5:7b")
 			.temperature(0.0).build();
 
 	// Its just a wrapper on top of HTTP client
-	private static McpTransport transport = StreamableHttpMcpTransport
+	private McpTransport transport = StreamableHttpMcpTransport
 			.builder()
 			.url("http://localhost:8081/mcp")
 			.logRequests(true)
@@ -37,17 +37,17 @@ public class Agent implements AutoCloseable {
 			.build();
 
 	// Provides the agent with information about all tools available at MCP server.
-	private static McpClient mcpClient = DefaultMcpClient.builder()
+	private McpClient mcpClient = DefaultMcpClient.builder()
 			.key("java-mcp-client")
 			.transport(transport)
 			.build();
 
-	private static McpToolProvider toolProvider = McpToolProvider.builder()
+	private McpToolProvider toolProvider = McpToolProvider.builder()
 			.mcpClients(mcpClient)
 			.build();
     
-	// final orchestrator or co-ordinator of tools + LLM + clients calls
-	private static Assistant assistant = AiServices.builder(Assistant.class)
+	// final agent or orchestrator or co-ordinator of tools + LLM + clients calls
+	private Assistant assistant = AiServices.builder(Assistant.class)
 			.chatModel(openAiChatModel)
 			// .chatModel(ollamaChatModel)
 			.tools(new CalculatorTool()) // tightly coupled tools

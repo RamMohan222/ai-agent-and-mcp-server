@@ -14,8 +14,10 @@ import jakarta.servlet.DispatcherType;
 public class HTTPServer {
 
 	public static void main(String[] args) {
-		// MCP server it self is not capable of reading the network calls.
-		// Its a Servlet that receives the MPC client calls from agent, to select and execute the tool.  
+		// The MCP server itself does not directly read or intercept network calls.
+		// It is a Servlet-based endpoint that receives MCP requests from the
+		// MCP client running in the agent, identifies the requested tool,
+		// executes the tool, and returns the result to the client.
 		HttpServletStreamableServerTransportProvider transportProvider = MCPServer
 				.buildTransportProvider(AccountToolSpecification.create(), AuthenticationToolSpecification.create());
 		
